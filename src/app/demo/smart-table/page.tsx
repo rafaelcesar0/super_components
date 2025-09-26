@@ -53,8 +53,8 @@ export default function Page() {
             options={{ maxDepth: 2, arrayStrategy: "join", maxColumns: 20 }}
             rowContextMenu={{
               enabled: true,
-              onEdit: () => alert("Editar"),
-              onDelete: () => alert("Deletar"),
+              onEdit: (row) => alert("Editar:\n" + JSON.stringify(row, null, 2)),
+              onDelete: (row) => alert("Deletar:\n" + JSON.stringify(row, null, 2)),
               onCreate: () => alert("Criar"),
             }}
           />
