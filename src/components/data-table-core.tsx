@@ -259,22 +259,32 @@ export function DataTableCore({
             </option>
           ))}
         </select>
-        <Button
-          variant='outline'
-          size='icon'
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft className='h-4 w-4' />
-        </Button>
-        <Button
-          variant='outline'
-          size='icon'
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight className='h-4 w-4' />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='outline'
+              size='icon'
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              <ChevronLeft className='h-4 w-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Página anterior</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant='outline'
+              size='icon'
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              <ChevronRight className='h-4 w-4' />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Próxima página</TooltipContent>
+        </Tooltip>
       </div>
     </div>
   )
@@ -294,7 +304,7 @@ export function DataTableCore({
                   query: event.target.value,
                 }))
               }
-              className='w-[300px] pl-8'
+              className='w-[300px] pl-8 h-9'
             />
           </div>
 
@@ -302,12 +312,12 @@ export function DataTableCore({
             <Tooltip>
               <TooltipTrigger asChild>
                 <DropdownMenuTrigger asChild>
-                  <Button variant='outline' size='sm'>
+                  <Button variant='outline' size='sm' className='h-9'>
                     <Filter className='h-4 w-4' />
                     {searchColumns.length !== allColumnIds.length && (
                       <Badge
                         variant='secondary'
-                        className='ml-1 h-5 px-1.5 text-xs'
+                        className='ml-1 h-4 px-1.5 text-xs'
                       >
                         {searchColumns.length}
                       </Badge>
@@ -355,6 +365,7 @@ export function DataTableCore({
                 }
                 aria-label='Case sensitive'
                 size='sm'
+                className='h-9 w-9'
               >
                 <CaseSensitive className='h-4 w-4' />
               </Toggle>
@@ -374,6 +385,7 @@ export function DataTableCore({
                 }
                 aria-label='Exact match'
                 size='sm'
+                className='h-9 w-9'
               >
                 <Target className='h-4 w-4' />
               </Toggle>
@@ -381,12 +393,14 @@ export function DataTableCore({
             <TooltipContent>Buscar por correspondência exata</TooltipContent>
           </Tooltip>
         </div>
-        <div className='flex items-center gap-2 text-sm text-muted-foreground'>
+
+        <div className='flex items-center gap-2 text-sm text-muted-foreground h-9'>
           {table.getFilteredRowModel().rows.length} linhas
         </div>
+
         <div className='flex items-center gap-2'>
           <select
-            className='border rounded px-2 py-1 bg-background text-sm'
+            className='border rounded px-2 py-1.5 bg-background text-sm h-9'
             value={pagination.pageSize}
             onChange={(event) => table.setPageSize(Number(event.target.value))}
           >
@@ -396,33 +410,46 @@ export function DataTableCore({
               </option>
             ))}
           </select>
-          <Button
-            variant='outline'
-            size='icon'
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft className='h-4 w-4' />
-          </Button>
-          <Button
-            variant='outline'
-            size='icon'
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight className='h-4 w-4' />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='outline'
+                size='icon'
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className='h-9 w-9'
+              >
+                <ChevronLeft className='h-4 w-4' />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Página anterior</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant='outline'
+                size='icon'
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+                className='h-9 w-9'
+              >
+                <ChevronRight className='h-4 w-4' />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>Próxima página</TooltipContent>
+          </Tooltip>
         </div>
+
         <div className='ml-auto flex items-center gap-2'>
           {rowMenu.enabled ? (
-            <Button onClick={rowMenu.onCreate}>
+            <Button onClick={rowMenu.onCreate} className='h-9'>
               <Plus className='mr-2 h-4 w-4' />
               Criar
             </Button>
           ) : null}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='outline'>
+              <Button variant='outline' className='h-9'>
                 <SlidersHorizontal className='mr-2 h-4 w-4' />
                 Exibição
               </Button>
