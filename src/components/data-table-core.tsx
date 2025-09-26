@@ -33,6 +33,13 @@ import { Separator } from '@/components/ui/separator'
 import { Toggle } from '@/components/ui/toggle'
 import { Badge } from '@/components/ui/badge'
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
   ChevronLeft,
   ChevronRight,
   Pencil,
@@ -248,17 +255,21 @@ export function DataTableCore({
         {table.getFilteredRowModel().rows.length} linhas
       </div>
       <div className='flex items-center gap-2'>
-        <select
-          className='border rounded px-2 py-1 bg-background'
-          value={pagination.pageSize}
-          onChange={(event) => table.setPageSize(Number(event.target.value))}
+        <Select
+          value={String(pagination.pageSize)}
+          onValueChange={(value) => table.setPageSize(Number(value))}
         >
-          {pageSizeOptionsResolved.map((option) => (
-            <option key={option} value={option}>
-              {option} / página
-            </option>
-          ))}
-        </select>
+          <SelectTrigger className='w-[130px] h-9'>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {pageSizeOptionsResolved.map((option) => (
+              <SelectItem key={option} value={String(option)}>
+                {option} / página
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -266,6 +277,7 @@ export function DataTableCore({
               size='icon'
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              className='h-9 w-9'
             >
               <ChevronLeft className='h-4 w-4' />
             </Button>
@@ -279,6 +291,7 @@ export function DataTableCore({
               size='icon'
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              className='h-9 w-9'
             >
               <ChevronRight className='h-4 w-4' />
             </Button>
@@ -291,7 +304,7 @@ export function DataTableCore({
 
   return (
     <div className={cn('w-full max-w-full', className)}>
-      <div className='flex items-center gap-2 mb-3 flex-wrap'>
+      <div className='flex items-center justify-between gap-2 mb-3 flex-wrap'>
         <div className='flex items-center gap-2'>
           <div className='relative'>
             <Search className='absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground' />
@@ -392,24 +405,27 @@ export function DataTableCore({
             </TooltipTrigger>
             <TooltipContent>Buscar por correspondência exata</TooltipContent>
           </Tooltip>
-        </div>
-
-        <div className='flex items-center gap-2 text-sm text-muted-foreground h-9'>
-          {table.getFilteredRowModel().rows.length} linhas
+          <p className='text-sm text-muted-foreground'>
+            {table.getFilteredRowModel().rows.length} linhas
+          </p>
         </div>
 
         <div className='flex items-center gap-2'>
-          <select
-            className='border rounded px-2 py-1.5 bg-background text-sm h-9'
-            value={pagination.pageSize}
-            onChange={(event) => table.setPageSize(Number(event.target.value))}
+          <Select
+            value={String(pagination.pageSize)}
+            onValueChange={(value) => table.setPageSize(Number(value))}
           >
-            {pageSizeOptionsResolved.map((option) => (
-              <option key={option} value={option}>
-                {option} / página
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className='w-[130px] h-9'>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {pageSizeOptionsResolved.map((option) => (
+                <SelectItem key={option} value={String(option)}>
+                  {option} / página
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -440,7 +456,7 @@ export function DataTableCore({
           </Tooltip>
         </div>
 
-        <div className='ml-auto flex items-center gap-2'>
+        <div className='flex items-center gap-2'>
           {rowMenu.enabled ? (
             <Button onClick={rowMenu.onCreate} className='h-9'>
               <Plus className='mr-2 h-4 w-4' />
@@ -456,6 +472,21 @@ export function DataTableCore({
             </DropdownMenuTrigger>
             <DropdownMenuContent align='end' className='w-56'>
               <DropdownMenuLabel>Colunas</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem
+                checked={visibleColumns.every((column) => column.getIsVisible())}
+                onCheckedChange={(value) => {
+                  if (value) {
+                    visibleColumns.forEach((column) => column.toggleVisibility(true))
+                  } else {
+                    visibleColumns.forEach((column) => column.toggleVisibility(false))
+                  }
+                }}
+                onSelect={(event) => event.preventDefault()}
+                className='font-medium'
+              >
+                Todos
+              </DropdownMenuCheckboxItem>
               <DropdownMenuSeparator />
               {visibleColumns.map((column) => (
                 <DropdownMenuCheckboxItem
