@@ -5,7 +5,7 @@ import * as React from "react";
 import { ApiSmartTable } from "@/components/api-smart-table";
 
 async function fetchPayload(signal?: AbortSignal) {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+  const response = await fetch("https://api.openligadb.de/getmatchdata/bl1/2023", {
     cache: "no-store",
     signal,
   });
@@ -24,7 +24,7 @@ export default function Page() {
       .catch((err) => {
         if (err.name !== "AbortError") {
           setError("Não foi possível carregar os dados.");
-          console.error("Erro ao buscar JSONPlaceholder:", err);
+          console.error("Erro ao buscar dados da OpenLigaDB:", err);
         }
       });
 
@@ -34,8 +34,8 @@ export default function Page() {
   return (
     <div className="p-6 space-y-3 w-full min-w-0">
       <div className="space-y-3 min-w-0">
-        <h1 className="text-xl font-semibold">JSONPlaceholder /posts</h1>
-        <p className="text-sm text-muted-foreground">Array na raiz com 100 posts (id, userId, title, body)</p>
+        <h1 className="text-xl font-semibold">OpenLigaDB Bundesliga 2023</h1>
+        <p className="text-sm text-muted-foreground">Dados reais de partidas da Bundesliga 2023 diretamente da OpenLigaDB</p>
         {error ? (
           <div className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
             {error}
@@ -48,7 +48,7 @@ export default function Page() {
       {payload ? (
         <div className="w-full min-w-0">
           <ApiSmartTable
-            tableId="demo-jsonplaceholder-posts"
+            tableId="demo-openligadb-matches"
             payload={payload}
             options={{ maxDepth: 2, arrayStrategy: "join", maxColumns: 20 }}
             rowContextMenu={{
